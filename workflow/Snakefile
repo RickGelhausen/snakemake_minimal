@@ -1,0 +1,31 @@
+
+import os
+import sys
+import pandas as pd
+from pathlib import Path
+
+configfile: "config/config.yml"
+
+samples = pd.read_csv(config["samples"], sep="\t", header=0)
+
+samples.sort_values(
+    by=["condition", "replicate", "treatment"],
+    key=lambda col: col.astype(str).str.lower() if col.dtype == "object" else col,
+    inplace=True
+)
+
+Path(config["output_dir"]).mkdir(parents=True, exist_ok=True)
+
+include: "rules/common.smk"
+include: "rules/rev.smk"
+include: "rules/cont.smk"
+
+rule all:
+    input:
+        expand(
+            "{output_dir}/combined/file-{replicate}.txt",
+            zip,
+            condition=samples["condition"],
+            replicate=samples["replicate"],
+            output_dir=[config["output_dir"]] * len(samples)
+        )

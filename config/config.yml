@@ -1,0 +1,2 @@
+samples: "config/samples.tsv"
+output_dir: "example_output"

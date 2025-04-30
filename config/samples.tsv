@@ -1,0 +1,5 @@
+condition	replicate	treatment	filePath
+ctrl	1	untreated	"test_data/ctrl1"
+ctrl	2	untreated	"test_data/ctrl2"
+trt	1	treated	"test_data/trt1"
+trt	2	treated	"test_data/trt2"
